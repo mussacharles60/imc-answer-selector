@@ -74,7 +74,7 @@ ipcRenderer.on('on-serial-close', () => {
     $('#status').text('Not Connected');
 });
 
-ipcRenderer.on('on-serial-data', (data) => {
+ipcRenderer.on('on-serial-data', (_event, data) => {
     console.log("on-serial-data:", data);
     $('#output-text').text(data);
     beep();

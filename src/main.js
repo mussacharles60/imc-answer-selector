@@ -275,7 +275,7 @@ const createWindow = () => {
                     if (temp_data != NaN) {
                         console.log("data: " + temp_data);
                         // code...
-                        mainWindow.webContents.send('on-serial-data', "serial-data-received " + temp_data);
+                        mainWindow.webContents.send('on-serial-data', temp_data);
                     }
                 } catch (err) {
                     console.log('serial-data: error: ', err.message);
@@ -306,8 +306,8 @@ const createWindow = () => {
     const closeSerialPort = () => {
         if (serialport && serialport.isOpen) {
             serialport.close();
-            serialport = null;
             is_serialport_opened = false;
+            mainWindow.webContents.send('on-serial-close', 'do-it');
         }
     }
 
