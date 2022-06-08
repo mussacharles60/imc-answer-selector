@@ -27,6 +27,7 @@ const beep = () => {
 };
 
 const path = require('path');
+// voices powered by https://voicemaker.in/
 const audio_1_file = path.join(__dirname, '/assets/audio-1.mp3');
 const audio_2_file = path.join(__dirname, '/assets/audio-2.mp3');
 const audio_3_file = path.join(__dirname, '/assets/audio-3.mp3');
