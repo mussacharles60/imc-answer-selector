@@ -1,1 +1,1 @@
-"# imc-answer-acceptor" 
+"# IMC Answer Selector" 
