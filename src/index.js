@@ -26,6 +26,19 @@ const beep = () => {
     );
 };
 
+const path = require('path');
+const audio_1_file = path.join(__dirname, '/assets/audio-1.mp3');
+const audio_2_file = path.join(__dirname, '/assets/audio-2.mp3');
+const audio_3_file = path.join(__dirname, '/assets/audio-3.mp3');
+const audio_4_file = path.join(__dirname, '/assets/audio-4.mp3');
+const audio_5_file = path.join(__dirname, '/assets/audio-5.mp3');
+
+let audio = new Audio();
+// let audio_2 = new Audio(audio_2_file);
+// let audio_3 = new Audio(audio_3_file);
+// let audio_4 = new Audio(audio_4_file);
+// let audio_5 = new Audio(audio_5_file);
+
 document.addEventListener('DOMContentLoaded', function () {
     $('#start-btn').on('click', () => {
         ipcRenderer.send('on-start-click', 'do-it');
@@ -77,5 +90,48 @@ ipcRenderer.on('on-serial-close', () => {
 ipcRenderer.on('on-serial-data', (_event, data) => {
     console.log("on-serial-data:", data);
     $('#output-text').text(data);
-    beep();
+    // beep();
+
+    if (data == 1) {
+        // audio_2.pause();
+        // audio_3.pause();
+        // audio_4.pause();
+        audio.pause();
+        audio = new Audio(audio_1_file);
+        audio.play();
+    }
+    else if (data == 2) {
+        // audio_1.pause();
+        // audio_3.pause();
+        // audio_4.pause();
+        audio.pause();
+        audio = new Audio(audio_2_file);
+        audio.play();
+    }
+    else if (data == 3) {
+        // audio_1.pause();
+        // audio_2.pause();
+        // audio_4.pause();
+        audio.pause();
+        audio = new Audio(audio_3_file);
+        audio.play();
+    }
+    else if (data == 4) {
+        // audio_1.pause();
+        // audio_2.pause();
+        // audio_3.pause();
+        // audio_5.pause();
+        audio.pause();
+        audio = new Audio(audio_4_file);
+        audio.play();
+    }
+    else if (data == 5) {
+        // audio_1.pause();
+        // audio_2.pause();
+        // audio_3.pause();
+        // audio_4.pause();
+        audio.pause();
+        audio = new Audio(audio_5_file);
+        audio.play();
+    }
 });
