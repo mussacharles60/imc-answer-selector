@@ -60,7 +60,7 @@ const createWindow = () => {
 
     ipcMain.on('on-start-click', (event, arg) => {
         if (!is_app_quit && !mainWindow.isDestroyed()) {
-           initSerialPort();
+            initSerialPort();
         }
     });
 
@@ -231,7 +231,7 @@ const createWindow = () => {
             },
             ]
         ));
-        if (serialport && serialport.isOpen()) {
+        if (serialport && serialport.isOpen) {
             serialport.close();
             serialport = null;
             is_serialport_opened = false;
@@ -254,7 +254,7 @@ const createWindow = () => {
             const parser = serialport.pipe(new Readline({ delimiter: '\n' }));
 
             console.log('serial-port: trying to open');
-            serialport.open(function (err) {
+            serialport.open(err => {
                 if (err) {
                     console.log('serial-port: error open: ', err.message);
                 }
@@ -263,30 +263,30 @@ const createWindow = () => {
             serialport.on('open', () => {
                 is_serialport_opened = true;
                 console.log('serial-port: ' + selected_port + ' opened');
-                ipcMain.emit('on-serial-open', 'do-it');
+                mainWindow.webContents.send('on-serial-open', 'do-it');
             });
 
             parser.on('data', data => {
-                // console.log('serial-data: received: ', data);
-                if (read_data_allowed) {
-                    try {
-                        data = data + "";
-                        var temp_data = parseInt(data);
-                        if (temp_data != NaN) {
-                            console.log("data: " + temp_data);
-                            // code...
-                            ipcMain.emit('serial-data', temp_data);
-                        }
-                    } catch (err) {
-                        console.log('serial-data: error: ', err.message);
+                console.log('serial-data: received: ', data);
+                //if (read_data_allowed) {
+                try {
+                    data = data + "";
+                    var temp_data = parseInt(data);
+                    if (temp_data != NaN) {
+                        console.log("data: " + temp_data);
+                        // code...
+                        mainWindow.webContents.send('on-serial-data', "serial-data-received " + temp_data);
                     }
+                } catch (err) {
+                    console.log('serial-data: error: ', err.message);
                 }
+                //}
             });
 
             parser.on('close', () => {
                 is_serialport_opened = false;
                 console.log('serial-closed');
-                ipcMain.emit('on-serial-close', 'do-it');
+                mainWindow.webContents.send('on-serial-close', 'do-it');
             });
 
             parser.on('error', err => {
@@ -304,7 +304,7 @@ const createWindow = () => {
     }
 
     const closeSerialPort = () => {
-        if (serialport && serialport.isOpen()) {
+        if (serialport && serialport.isOpen) {
             serialport.close();
             serialport = null;
             is_serialport_opened = false;

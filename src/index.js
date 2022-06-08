@@ -61,6 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
 ipcRenderer.on('on-serial-open', () => {
     // hide start-btn
     $('#start-btn').hide();
+    $('#stop-btn').show();
     $('#stop-btn').on('click', () => {
         ipcRenderer.send('on-stop-click', 'do-it');
     });
@@ -73,7 +74,8 @@ ipcRenderer.on('on-serial-close', () => {
     $('#status').text('Not Connected');
 });
 
-ipcRenderer.on('serial-data', (data) => {
+ipcRenderer.on('on-serial-data', (data) => {
+    console.log("on-serial-data:", data);
     $('#output-text').text(data);
     beep();
 });
