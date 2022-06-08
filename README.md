@@ -1,1 +1,1 @@
-"# IMC Answer Selector" 
+# IMC Answer Selector
