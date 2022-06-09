@@ -65,6 +65,10 @@ document.addEventListener('DOMContentLoaded', function () {
     $('#btn').on('click', () => {
         ipcRenderer.send('on-restart-click', 'do-it');
     });
+    $('#video').trigger('play');
+    $('#video').on('ended', () => {
+        $('#splash').hide();
+    });
 
     document.onkeydown = function (evt) {
         evt = evt || window.event;

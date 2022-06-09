@@ -38,7 +38,36 @@ const createWindow = () => {
 
     mainWindow.on('ready-to-show', () => {
         mainWindow.show();
+        // get the stored value of 'isMaximized' from local storage using executeJavaScript
+        mainWindow.webContents.executeJavaScript(`
+            localStorage.getItem('isMaximized')
+        `).then(isMaximized => {
+            if (isMaximized) {
+                mainWindow.maximize();
+            }
+        }).catch(err => {
+            console.log(err);
+        });
     });
+
+    // listen when window is maximized
+    mainWindow.on('maximize', () => {
+        // save to local storage by executing mainWindow.webContents.executeJavaScript
+        mainWindow.webContents.executeJavaScript(`
+            localStorage.setItem('isMaximized', true);
+        `);
+    });
+
+    // listen when window is unmaximized
+    mainWindow.on('unmaximize', () => {
+        // save to local storage by executing mainWindow.webContents.executeJavaScript
+        mainWindow.webContents.executeJavaScript(`
+            localStorage.setItem('isMaximized', false);
+        `);
+    });
+
+
+
 
     // mainWindow.webContents.openDevTools(); // Open the DevTools.
 
@@ -297,7 +326,7 @@ const createWindow = () => {
                     data = data + "";
                     var temp_data = parseInt(data);
                     if (temp_data != NaN) {
-                        console.log("data: " + temp_data);
+                        // console.log("data: " + temp_data);
                         // code...
                         mainWindow.webContents.send('on-serial-data', temp_data);
                     }

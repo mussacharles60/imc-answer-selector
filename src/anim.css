@@ -1,6 +1,7 @@
 .cadre-loading {
     background: #29588B;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -11,6 +12,10 @@
     width: 100%;
     text-align: center;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .loader-form {

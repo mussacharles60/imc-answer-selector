@@ -20,7 +20,7 @@
     "build": {
         "appId": "imc-answer-selector",
         "buildDependenciesFromSource": true,
-        "asar": false,
+        "asar": true,
         "win": {
             "target": [
                 "nsis"

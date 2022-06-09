@@ -30,6 +30,38 @@ body {
     z-index: 10;
 }
 
+.splash {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 999;
+    background: #141614;
+}
+
+.splash #video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background: #141614;
+}
+
 .btn {
     width: 30px;
     height: 30px;
@@ -55,8 +87,6 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
-    margin: 16px;
-    padding: 16px;
     position: absolute;
     top: 50%;
     left: 50%;
@@ -86,7 +116,6 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
-    margin: 16px;
     padding: 16px;
 }
 
@@ -115,7 +144,6 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
-    margin: 16px;
     padding: 16px;
     position: absolute;
     top: 50%;
@@ -131,7 +159,7 @@ body {
     justify-content: center;
     align-items: center;
     text-align: center;
-    font-size: 300px;
+    font-size: 500px;
     color: #fff;
     font-weight: bold;
     word-spacing: 2px;
