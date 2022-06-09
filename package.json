@@ -43,8 +43,8 @@
         "imperial innovations",
         "software & hardware"
     ],
-    "author": "Imperial Innovations (IMC)",
-    "license": "MIT",
+    "author": "Imperial Innovations (IMC) Tz",
+    "license": "Apache-2.0",
     "config": {
         "forge": {
             "packagerConfig": {},
