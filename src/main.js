@@ -342,7 +342,7 @@ const createWindow = () => {
         });
     }
 
-    setMainMenu();
+    // setMainMenu();
 };
 
 if (require('electron-squirrel-startup')) { // eslint-disable-line global-require

@@ -62,6 +62,9 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     $('#stop-btn').hide();
     $('#amin-container').hide();
+    $('#btn').on('click', () => {
+        ipcRenderer.send('on-restart-click', 'do-it');
+    });
 
     document.onkeydown = function (evt) {
         evt = evt || window.event;
