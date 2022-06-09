@@ -29,10 +29,16 @@ const createWindow = () => {
         fullscreenable: true,
         webPreferences: {
             nodeIntegration: true
-        }
+        },
+        show: false
     });
 
     mainWindow.loadFile(path.join(__dirname, 'index.html'));
+    mainWindow.setMenu(null);
+
+    mainWindow.on('ready-to-show', () => {
+        mainWindow.show();
+    });
 
     // mainWindow.webContents.openDevTools(); // Open the DevTools.
 
@@ -79,48 +85,48 @@ const createWindow = () => {
         }
     });
 
-    const setMainMenu = () => {
-        Menu.setApplicationMenu(Menu.buildFromTemplate(
-            [{
-                label: 'System',
-                submenu: [{
-                    label: 'Restart',
-                    click() {
-                        app.relaunch();
-                        app.quit();
-                    }
-                },
-                {
-                    label: 'Exit  [ESC]',
-                    click() {
-                        app.quit();
-                    }
-                }
-                ]
-            },
-            {
-                label: 'Tools',
-                submenu: [{
-                    label: 'Configure device port   ' + '(' + selected_port + ')',
-                    id: 'change_port',
-                    click() {
-                        getAvailablePorts();
-                    }
-                }]
-            },
-            {
-                label: 'About',
-                submenu: [{
-                    label: 'License'
-                }]
-            },
-            ]
-        ));
-    }
+    // const setMainMenu = () => {
+    //     Menu.setApplicationMenu(Menu.buildFromTemplate(
+    //         [{
+    //             label: 'System',
+    //             submenu: [{
+    //                 label: 'Restart',
+    //                 click() {
+    //                     app.relaunch();
+    //                     app.quit();
+    //                 }
+    //             },
+    //             {
+    //                 label: 'Exit  [ESC]',
+    //                 click() {
+    //                     app.quit();
+    //                 }
+    //             }
+    //             ]
+    //         },
+    //         {
+    //             label: 'Tools',
+    //             submenu: [{
+    //                 label: 'Configure device port   ' + '(' + selected_port + ')',
+    //                 id: 'change_port',
+    //                 click() {
+    //                     getAvailablePorts();
+    //                 }
+    //             }]
+    //         },
+    //         {
+    //             label: 'About',
+    //             submenu: [{
+    //                 label: 'License'
+    //             }]
+    //         },
+    //         ]
+    //     ));
+    // }
 
     const getAvailablePorts = () => {
         Serialport.list().then(function (ports_data) {
-            console.log('serial-ports-list: ', ports_data);
+            // console.log('serial-ports-list: ', ports_data);
             if (ports_data.length === 0) {
 
                 is_dialog_opened = true;
@@ -194,43 +200,43 @@ const createWindow = () => {
     const savePort = (portName) => {
         selected_port = portName;
         // console.log('port saved: ' + portName);
-        Menu.setApplicationMenu(Menu.buildFromTemplate(
-            [{
-                label: 'System',
-                submenu: [{
-                    label: 'Restart',
-                    click() {
-                        app.relaunch();
-                        app.quit();
-                    }
-                },
-                {
-                    label: 'Exit  [ESC]',
-                    click() {
-                        app.quit();
-                    }
-                }
-                ]
-            },
-            {
-                label: 'Tools',
-                submenu: [{
-                    label: 'Configure device port   ' + '(' + selected_port + ')',
-                    id: 'change_port',
-                    click() {
-                        // console.log('Oh, hi there!');
-                        getAvailablePorts();
-                    }
-                }]
-            },
-            {
-                label: 'About',
-                submenu: [{
-                    label: 'License'
-                }]
-            },
-            ]
-        ));
+        // Menu.setApplicationMenu(Menu.buildFromTemplate(
+        //     [{
+        //         label: 'System',
+        //         submenu: [{
+        //             label: 'Restart',
+        //             click() {
+        //                 app.relaunch();
+        //                 app.quit();
+        //             }
+        //         },
+        //         {
+        //             label: 'Exit  [ESC]',
+        //             click() {
+        //                 app.quit();
+        //             }
+        //         }
+        //         ]
+        //     },
+        //     {
+        //         label: 'Tools',
+        //         submenu: [{
+        //             label: 'Configure device port   ' + '(' + selected_port + ')',
+        //             id: 'change_port',
+        //             click() {
+        //                 // console.log('Oh, hi there!');
+        //                 getAvailablePorts();
+        //             }
+        //         }]
+        //     },
+        //     {
+        //         label: 'About',
+        //         submenu: [{
+        //             label: 'License'
+        //         }]
+        //     },
+        //     ]
+        // ));
         if (serialport && serialport.isOpen) {
             serialport.close();
             serialport = null;
@@ -253,7 +259,7 @@ const createWindow = () => {
 
             const parser = serialport.pipe(new Readline({ delimiter: '\n' }));
 
-            console.log('serial-port: trying to open');
+            // console.log('serial-port: trying to open');
             serialport.open(err => {
                 if (err) {
                     console.log('serial-port: error open: ', err.message);
@@ -262,12 +268,12 @@ const createWindow = () => {
 
             serialport.on('open', () => {
                 is_serialport_opened = true;
-                console.log('serial-port: ' + selected_port + ' opened');
+                // console.log('serial-port: ' + selected_port + ' opened');
                 mainWindow.webContents.send('on-serial-open', 'do-it');
             });
 
             parser.on('data', data => {
-                console.log('serial-data: received: ', data);
+                // console.log('serial-data: received: ', data);
                 //if (read_data_allowed) {
                 try {
                     data = data + "";

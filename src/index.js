@@ -49,6 +49,7 @@ function listenAudioEvents(audio) {
         } else {
             $('#first').show();
         }
+        $('#output-container').hide();
     });
 }
 
