@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, Menu, dialog } = require('electron');
+const { app, BrowserWindow, ipcMain, Menu, MenuItem, dialog } = require('electron');
 const path = require('path');
 const Serialport = require('serialport');
 const Readline = require('@serialport/parser-readline');
@@ -147,52 +147,70 @@ const createWindow = () => {
                     }
                 });
             } else {
-                // const ports = ports_data.split(',');
-                const btns = [];
-                const btns_display = [];
-                btns[0] = 'Cancel'
-                btns[1] = '* Refresh *'
-                btns_display[0] = 'Cancel'
-                btns_display[1] = '* Refresh *'
+                const menu = new Menu();
+                menu.append(new MenuItem({
+                    label: 'Cancel',
+                    id: 'Cancel',
+                    click: () => { }
+                }));
+                menu.append(new MenuItem({
+                    label: '* Refresh *',
+                    id: 'refresh',
+                    click: () => {
+                        setTimeout(() => getAvailablePorts(), 1000);
+                    }
+                }));
 
                 for (var i = 0; i < ports_data.length; i++) {
                     const name = ports_data[i].path;
                     const displayName = name == selected_port ? name + " (Current Selected)" : name;
-                    btns[i + 2] = name;
-                    btns_display[i + 2] = displayName;
+                    menu.append(new MenuItem({
+                        label: displayName,
+                        id: 'port-' + i,
+                        click: (item, _window) => {
+                            if (item.id.startsWith('port-')) {
+                                const positionStr = item.id.split('-')[1];
+                                const position = parseInt(positionStr);
+                                const port_name = ports_data[position].path;
+                                savePort(port_name);
+                            }
+                        }
+                    }));
                 }
 
-                let options = {
-                    type: 'info',
-                    title: 'IMC - Hardware Devices',
-                    message: 'Select Port',
-                    // detail: 'Ports: ' + ports_data,
-                    buttons: btns_display
-                };
+                menu.popup(mainWindow);
 
-                is_dialog_opened = true;
+                // let options = {
+                //     type: 'info',
+                //     title: 'IMC - Hardware Devices',
+                //     message: 'Select Port',
+                //     // detail: 'Ports: ' + ports_data,
+                //     buttons: btns_display
+                // };
 
-                dialog.showMessageBox(mainWindow, options).then(res => {
-                    // console.log("res_2: ");
-                    // console.log(res);
-                    is_dialog_opened = false;
-                    if (res) {
-                        if (res.response == 1) {
-                            setTimeout(function () {
-                                getAvailablePorts(); // refresh
-                            }, 1000);
-                        } else if (res.response > 1) {
-                            // for (var i = 0; i < btns.length; i++) {
-                            //     console.log('found port:' + `${btns[i]}`);
-                            // }
-                            const position = res.response;
-                            // console.log('selected position:' + position);
-                            const name = btns[position];
-                            // console.log('selected port:' + name);
-                            savePort(name);
-                        }
-                    }
-                });
+                // is_dialog_opened = true;
+
+                // dialog.showMessageBox(mainWindow, options).then(res => {
+                //     // console.log("res_2: ");
+                //     // console.log(res);
+                //     is_dialog_opened = false;
+                //     if (res) {
+                //         if (res.response == 1) {
+                //             setTimeout(function () {
+                //                 getAvailablePorts(); // refresh
+                //             }, 1000);
+                //         } else if (res.response > 1) {
+                //             // for (var i = 0; i < btns.length; i++) {
+                //             //     console.log('found port:' + `${btns[i]}`);
+                //             // }
+                //             const position = res.response;
+                //             // console.log('selected position:' + position);
+                //             const name = btns[position];
+                //             // console.log('selected port:' + name);
+                //             savePort(name);
+                //         }
+                //     }
+                // });
             }
         });
     }
