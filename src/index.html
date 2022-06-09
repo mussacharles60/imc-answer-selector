@@ -7,18 +7,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="index.css" type="text/css">
+    <link rel="stylesheet" href="anim.css" type="text/css">
 </head>
 
 <body>
+    <div class="cadre-loading" id="amin-container">
+        <div id="loading" class="loading"></div>
+    </div>
     <div class="root">
-        <div class="header">
+        <div class="first" id="first">
             <span id="status">Not Connected</span>
+            <div class="btns-container" id="btns-container">
+                <div id="start-btn" class="button">Start</div>
+                <div id="stop-btn" class="button">Stop</div>
+            </div>
         </div>
-        <div class="btns-container">
-            <div id="start-btn" class="button">Start</div>
-            <div id="stop-btn" class="button">Stop</div>
-        </div>
-        <div class="output-container">
+        <div class="output-container" id="output-container">
             <span id="output-text"></span>
         </div>
         <!-- <audio id="audio" autoplay hidden>
@@ -26,6 +30,7 @@
         </audio> -->
     </div>
     <script src="index.js"></script>
+    <script src="anim.js"></script>
 </body>
 
 </html>

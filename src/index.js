@@ -3,28 +3,28 @@ const ipcRenderer = electron.ipcRenderer;
 
 var $ = jQuery = require("jquery");
 
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+// const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
 
-const beep = () => {
-    var oscillator = audioCtx.createOscillator();
-    var gainNode = audioCtx.createGain();
+// const beep = () => {
+//     var oscillator = audioCtx.createOscillator();
+//     var gainNode = audioCtx.createGain();
 
-    oscillator.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
+//     oscillator.connect(gainNode);
+//     gainNode.connect(audioCtx.destination);
 
-    gainNode.gain.value = 1; // volume
-    oscillator.frequency.value = 2310; // frequency
-    oscillator.type = 'sawtooth'; // type
+//     gainNode.gain.value = 1; // volume
+//     oscillator.frequency.value = 2310; // frequency
+//     oscillator.type = 'sawtooth'; // type
 
-    oscillator.start();
+//     oscillator.start();
 
-    setTimeout(
-        function () {
-            oscillator.stop();
-        },
-        250 // duration
-    );
-};
+//     setTimeout(
+//         function () {
+//             oscillator.stop();
+//         },
+//         250 // duration
+//     );
+// };
 
 const path = require('path');
 // voices powered by https://voicemaker.in/
@@ -34,17 +34,33 @@ const audio_3_file = path.join(__dirname, '/assets/audio-3.mp3');
 const audio_4_file = path.join(__dirname, '/assets/audio-4.mp3');
 const audio_5_file = path.join(__dirname, '/assets/audio-5.mp3');
 
+var connected = false;
+
+function listenAudioEvents(audio) {
+    audio.addEventListener('play', () => {
+        $('#amin-container').hide();
+        $('#first').hide();
+        $('#output-container').show();
+    });
+    audio.addEventListener('ended', () => {
+        $('#amin-container').show();
+        if (connected) {
+            $('#first').hide();
+        } else {
+            $('#first').show();
+        }
+    });
+}
+
 let audio = new Audio();
-// let audio_2 = new Audio(audio_2_file);
-// let audio_3 = new Audio(audio_3_file);
-// let audio_4 = new Audio(audio_4_file);
-// let audio_5 = new Audio(audio_5_file);
+listenAudioEvents(audio);
 
 document.addEventListener('DOMContentLoaded', function () {
     $('#start-btn').on('click', () => {
         ipcRenderer.send('on-start-click', 'do-it');
     });
     $('#stop-btn').hide();
+    $('#amin-container').hide();
 
     document.onkeydown = function (evt) {
         evt = evt || window.event;
@@ -73,66 +89,48 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 ipcRenderer.on('on-serial-open', () => {
-    // hide start-btn
+    connected = true;
     $('#start-btn').hide();
     $('#stop-btn').show();
     $('#stop-btn').on('click', () => {
         ipcRenderer.send('on-stop-click', 'do-it');
     });
     $('#status').text('Connected');
+    $('#first').hide();
+    $('#amin-container').show();
 });
 
 ipcRenderer.on('on-serial-close', () => {
+    connected = false;
     $('#start-btn').show();
     $('#stop-btn').hide();
     $('#status').text('Not Connected');
+    $('#first').hide();
+    $('#btns-container').show();
 });
 
 ipcRenderer.on('on-serial-data', (_event, data) => {
+    $('#amin-container').hide();
+    $('#output-container').show();
     console.log("on-serial-data:", data);
     $('#output-text').text(data);
     // beep();
-
+    audio.pause();
     if (data == 1) {
-        // audio_2.pause();
-        // audio_3.pause();
-        // audio_4.pause();
-        audio.pause();
         audio = new Audio(audio_1_file);
-        audio.play();
     }
     else if (data == 2) {
-        // audio_1.pause();
-        // audio_3.pause();
-        // audio_4.pause();
-        audio.pause();
         audio = new Audio(audio_2_file);
-        audio.play();
     }
     else if (data == 3) {
-        // audio_1.pause();
-        // audio_2.pause();
-        // audio_4.pause();
-        audio.pause();
         audio = new Audio(audio_3_file);
-        audio.play();
     }
     else if (data == 4) {
-        // audio_1.pause();
-        // audio_2.pause();
-        // audio_3.pause();
-        // audio_5.pause();
-        audio.pause();
         audio = new Audio(audio_4_file);
-        audio.play();
     }
     else if (data == 5) {
-        // audio_1.pause();
-        // audio_2.pause();
-        // audio_3.pause();
-        // audio_4.pause();
-        audio.pause();
         audio = new Audio(audio_5_file);
-        audio.play();
     }
+    listenAudioEvents(audio);
+    audio.play();
 });
