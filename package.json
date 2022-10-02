@@ -1,7 +1,7 @@
 {
     "name": "imc-answer-selector",
-    "productName": "IMC Answer Selector",
-    "version": "1.0.2",
+    "productName": "IMC-Answer-Selector",
+    "version": "1.0.3",
     "description": "IMC Answer Selector (Imperial Innovation TZ)",
     "main": "src/main.js",
     "scripts": {
@@ -30,7 +30,7 @@
         "nsis": {
             "installerIcon": "src/icon.ico",
             "uninstallerIcon": "src/icon.ico",
-            "uninstallDisplayName": "IMC Answer Selector",
+            "uninstallDisplayName": "IMC-Answer-Selector",
             "license": "license.txt",
             "oneClick": false,
             "allowToChangeInstallationDirectory": true
@@ -52,7 +52,7 @@
                 {
                     "name": "@electron-forge/maker-squirrel",
                     "config": {
-                        "name": "IMC Answer Selector"
+                        "name": "IMC-Answer-Selector"
                     }
                 },
                 {

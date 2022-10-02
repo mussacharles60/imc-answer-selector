@@ -33,6 +33,7 @@ const audio_2_file = path.join(__dirname, '/assets/audio-2.mp3');
 const audio_3_file = path.join(__dirname, '/assets/audio-3.mp3');
 const audio_4_file = path.join(__dirname, '/assets/audio-4.mp3');
 const audio_5_file = path.join(__dirname, '/assets/audio-5.mp3');
+const audio_6_file = path.join(__dirname, '/assets/audio-6.mp3');
 
 var connected = false;
 
@@ -138,6 +139,9 @@ ipcRenderer.on('on-serial-data', (_event, data) => {
     }
     else if (data == 5) {
         audio = new Audio(audio_5_file);
+    }
+    else if (data == 6) {
+        audio = new Audio(audio_6_file);
     }
     listenAudioEvents(audio);
     audio.play();
